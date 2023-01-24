@@ -1,6 +1,6 @@
 {
   "name": "@steroidsjs/nest-notifier",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Steroids Nest Notifier Module",
   "author": "",
   "license": "MIT",
@@ -17,8 +17,8 @@
     "@ntegral/nestjs-sentry": "^3.0.7",
     "@sentry/node": "^6.18.2",
     "@sentry/types": "^6.18.2",
-    "@steroidsjs/nest-typeorm": "^9.0.1",
-    "@steroidsjs/typeorm": "^0.3.11",
+    "@steroidsjs/nest-typeorm": "*",
+    "@steroidsjs/typeorm": "*",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "lodash": "^4.17.21",
