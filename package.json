@@ -9,8 +9,8 @@
     "watch": "tsc -p tsconfig-debug.json"
   },
   "dependencies": {
-    "@steroidsjs/nest": "*",
-    "@steroidsjs/nest-modules": "*",
+    "@steroidsjs/nest": "^1.7.0",
+    "@steroidsjs/nest-modules": "^0.0.7",
     "@steroidsjs/nest-typeorm": "^9.0.3",
     "@steroidsjs/typeorm": "^0.3.11",
     "@steroidsjs/eslint-config": "^2.0.1",
