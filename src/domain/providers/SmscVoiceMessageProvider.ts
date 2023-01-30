@@ -1,5 +1,4 @@
 import axios from 'axios';
-import {ConfigService} from '@nestjs/config';
 import NotifierProviderType from '@steroidsjs/nest-modules/notifier/enums/NotifierProviderType';
 import {
     INotifierBaseOptions,
@@ -7,6 +6,9 @@ import {
 } from '@steroidsjs/nest-modules/notifier/interfaces/INotifierSendOptions';
 import NotifierSendException from '@steroidsjs/nest-modules/notifier/exceptions/NotifierSendException';
 import {INotifierProvider} from '../interfaces/INotifierProvider';
+import {ModuleHelper} from '@steroidsjs/nest/infrastructure/helpers/ModuleHelper';
+import {INotifierModuleConfig} from '../../infrastructure/config';
+import {NotifierModule} from '@steroidsjs/nest-modules/notifier/NotifierModule';
 
 export class SmscVoiceMessageProvider implements INotifierProvider {
     public type = NotifierProviderType.VOICE;
@@ -14,7 +16,6 @@ export class SmscVoiceMessageProvider implements INotifierProvider {
     public name = 'smsc';
 
     constructor(
-        public configService: ConfigService,
     ) {
     }
 
@@ -23,14 +24,11 @@ export class SmscVoiceMessageProvider implements INotifierProvider {
         phone = phone.replace('/[^0-9]+/', '');
         phone = phone.replace('/^8/', '7');
 
-        const login = this.configService.get('notifier.providers.smsc.login');
-        const psw = this.configService.get('notifier.providers.smsc.password');
-
+        const {login, password} = ModuleHelper.getConfig<INotifierModuleConfig>(NotifierModule)?.providers?.smsc || {};
         if (!login) {
             throw new Error('Wrong SmscCallProvider configuration, please set "notifier.providers.smsc.login" param.');
         }
-
-        if (!psw) {
+        if (!password) {
             throw new Error(
                 'Wrong SmscCallProvider configuration, please set "notifier.providers.smsc.password" param.',
             );
@@ -43,7 +41,7 @@ export class SmscVoiceMessageProvider implements INotifierProvider {
                 {
                     params: {
                         login,
-                        psw,
+                        psw: password,
                         phones: phone,
                         voice: options.voice || 'm',
                         mes: options.message,

@@ -1,4 +1,3 @@
-import {ConfigService} from '@nestjs/config';
 import axios from 'axios';
 import NotifierProviderType from '@steroidsjs/nest-modules/notifier/enums/NotifierProviderType';
 import {
@@ -7,6 +6,9 @@ import {
 } from '@steroidsjs/nest-modules/notifier/interfaces/INotifierSendOptions';
 import NotifierSendException from '@steroidsjs/nest-modules/notifier/exceptions/NotifierSendException';
 import {INotifierProvider} from '../interfaces/INotifierProvider';
+import {ModuleHelper} from '@steroidsjs/nest/infrastructure/helpers/ModuleHelper';
+import {NotifierModule} from '@steroidsjs/nest-modules/notifier/NotifierModule';
+import {INotifierModuleConfig} from '../../infrastructure/config';
 
 export class SmscCallProvider implements INotifierProvider {
     public type = NotifierProviderType.CALL;
@@ -14,7 +16,6 @@ export class SmscCallProvider implements INotifierProvider {
     public name = 'smsc';
 
     constructor(
-        public configService: ConfigService,
     ) {
     }
 
@@ -23,14 +24,11 @@ export class SmscCallProvider implements INotifierProvider {
         phone = phone.replace('/[^0-9]+/', '');
         phone = phone.replace('/^8/', '7');
 
-        const login = this.configService.get('notifier.providers.smsc.login');
-        const psw = this.configService.get('notifier.providers.smsc.password');
-
+        const {login, password} = ModuleHelper.getConfig<INotifierModuleConfig>(NotifierModule)?.providers?.smsc || {};
         if (!login) {
             throw new Error('Wrong SmscCallProvider configuration, please set "notifier.providers.smsc.login" param.');
         }
-
-        if (!psw) {
+        if (!password) {
             throw new Error('Wrong SmscCallProvider configuration, please set "notifier.providers.smsc.password" param.');
         }
 
@@ -41,7 +39,7 @@ export class SmscCallProvider implements INotifierProvider {
                 {
                     params: {
                         login,
-                        psw,
+                        psw: password,
                         phones: phone,
                         mes: 'code',
                         call: 1,

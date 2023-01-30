@@ -2,14 +2,6 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./../../../inspect-app/backend/node_modules/@steroidsjs/nest-notifier",
-    "watch": true,
-    "paths": {
-      "@steroidsjs/nest/*": [
-        "../nest/src/*"
-      ],
-      "@steroidsjs/nest-modules/*": [
-        "../nest-modules/src/*"
-      ]
-    }
+    "watch": true
   }
 }
