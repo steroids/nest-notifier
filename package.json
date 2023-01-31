@@ -1,6 +1,6 @@
 {
   "name": "@steroidsjs/nest-notifier",
-  "version": "0.0.7",
+  "version": "0.0.9",
   "description": "Steroids Nest Notifier Module",
   "author": "",
   "license": "MIT",
@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@steroidsjs/nest": "^1.7.0",
-    "@steroidsjs/nest-modules": "^0.0.7",
+    "@steroidsjs/nest-modules": "^0.0.8",
     "@steroidsjs/nest-typeorm": "^9.0.3",
     "@steroidsjs/typeorm": "^0.3.11",
     "@steroidsjs/eslint-config": "^2.0.1",
