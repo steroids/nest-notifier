@@ -1,5 +1,6 @@
 import {ModuleHelper} from '@steroidsjs/nest/infrastructure/helpers/ModuleHelper';
 import {INotifierService} from '@steroidsjs/nest-modules/notifier/services/INotifierService';
+import {NotifierModule} from '@steroidsjs/nest-modules/notifier/NotifierModule';
 import {INotifierStoreMessageRepository} from '../domain/interfaces/INotifierStoreMessageRepository';
 import {NotifierStoreMessageRepository} from './repositories/NotifierStoreMessageRepository';
 import {NotifierService} from '../domain/services/NotifierService';
@@ -21,6 +22,7 @@ export interface INotifierModuleConfig {
 }
 
 export default {
+    rootTarget: NotifierModule,
     config: () => ({
         providers: {
             smsRu: {
