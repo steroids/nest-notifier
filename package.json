@@ -1,6 +1,6 @@
 {
   "name": "@steroidsjs/nest-notifier",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Steroids Nest Notifier Module",
   "author": "",
   "license": "MIT",
@@ -13,7 +13,6 @@
     "@steroidsjs/nest-modules": "^0.0.8",
     "@steroidsjs/nest-typeorm": "^9.0.3",
     "@steroidsjs/typeorm": "^0.3.11",
-    "@steroidsjs/eslint-config": "^2.0.1",
     "@nestjs/common": "^9.2.1",
     "lodash": "^4.17.21",
     "firebase-admin": "^11.5.0",
@@ -21,6 +20,7 @@
     "axios": "^1.2.6"
   },
   "devDependencies": {
+    "@steroidsjs/eslint-config": "^2.1.0",
     "copyfiles": "^2.4.1",
     "@nestjs/schematics": "^9.0.4",
     "@nestjs/testing": "^9.2.1",
