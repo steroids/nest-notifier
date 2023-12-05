@@ -20,10 +20,11 @@ export class NotifierStoreMessageRepository
     }
 
     public async readNotifications(notificationsIds: number[]) {
-        return this.dbRepository.createQueryBuilder()
+        await this.dbRepository.createQueryBuilder()
             .update()
             .set({isRead: true})
             .where('id IN (:...notificationsIds)', {notificationsIds})
-            .execute();
+            .execute()
+        return;
     }
 }
