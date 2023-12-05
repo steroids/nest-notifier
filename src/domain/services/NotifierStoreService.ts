@@ -15,4 +15,12 @@ export default class NotifierStoreService extends CrudService<NotifierStoreMessa
     ) {
         super();
     }
+
+    public async readNotification(notificationId: number) {
+        return this.repository.readNotifications([notificationId]);
+    }
+
+    public async readNotifications(notificationsIds: number[]) {
+        return this.repository.readNotifications(notificationsIds);
+    }
 }

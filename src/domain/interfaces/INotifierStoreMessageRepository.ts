@@ -2,4 +2,6 @@ import {ICrudRepository} from '@steroidsjs/nest/usecases/interfaces/ICrudReposit
 import {NotifierStoreMessageModel} from '../models/NotifierStoreMessageModel';
 
 export const INotifierStoreMessageRepository = 'INotifierStoreMessageRepository';
-export type INotifierStoreMessageRepository = ICrudRepository<NotifierStoreMessageModel>;
+export interface INotifierStoreMessageRepository extends ICrudRepository<NotifierStoreMessageModel> {
+    readNotifications: (notificationsIds: number[]) => Promise<void>;
+}
