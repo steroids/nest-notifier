@@ -6,8 +6,20 @@ export class NotifierSendLogSaveDto {
     id: number;
 
     @ExtendField(NotifierSendLogModel)
-    provider: string;
+    sendRequestId: number;
+
+    @ExtendField(NotifierSendLogModel)
+    providerType: string;
+
+    @ExtendField(NotifierSendLogModel)
+    providerName: string;
 
     @ExtendField(NotifierSendLogModel)
     status: string;
+
+    @ExtendField(NotifierSendLogModel)
+    receiver: string;
+
+    @ExtendField(NotifierSendLogModel)
+    errorMessage?: string;
 }

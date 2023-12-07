@@ -1,9 +1,9 @@
 import {NotifierSendLogTable} from './NotifierSendLogTable';
 import {NotifierSendPushLogTable} from './NotifierSendPushLogTable';
-import {NotifierStoreMessageTable} from './NotifierStoreMessageTable';
+import {NotifierSendRequestTable} from './NotifierSendRequestTable';
 
 export default [
     NotifierSendLogTable,
     NotifierSendPushLogTable,
-    NotifierStoreMessageTable,
+    NotifierSendRequestTable,
 ];

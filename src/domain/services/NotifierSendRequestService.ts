@@ -4,46 +4,46 @@ import {SearchResultDto} from '@steroidsjs/nest/usecases/dtos/SearchResultDto';
 import {Type} from '@nestjs/common';
 import {validateOrReject} from '@steroidsjs/nest/usecases/helpers/ValidationHelper';
 import SearchQuery from '@steroidsjs/nest/usecases/base/SearchQuery';
-import {INotifierSendPushLogRepository} from '../interfaces/INotifierSendPushLogRepository';
-import {NotifierSendPushLogModel} from '../models/NotifierSendPushLogModel';
-import {NotifierSendPushLogSaveDto} from '../dtos/NotifierSendPushLogSaveDto';
-import {NotifierSendPushLogSearchDto} from '../dtos/NotifierSendPushLogSearchDto';
+import {INotifierSendRequestRepository} from '../interfaces/INotifierSendRequestRepository';
+import {NotifierSendRequestSaveDto} from '../dtos/NotifierSendRequestSaveDto';
+import {NotifierSendRequestSearchDto} from '../dtos/NotifierSendRequestSearchDto';
+import {NotifierSendRequestModel} from '../models/NotifierSendRequestModel';
 
-export class NotifierSendPushLogService extends CrudService<
-    NotifierSendPushLogModel,
-    NotifierSendPushLogSearchDto,
-    NotifierSendPushLogSaveDto> {
-    protected modelClass = NotifierSendPushLogModel;
+export class NotifierSendRequestService extends CrudService<
+    NotifierSendRequestModel,
+    NotifierSendRequestSearchDto,
+    NotifierSendRequestSaveDto> {
+    protected modelClass = NotifierSendRequestModel;
 
     constructor(
-        /** NotifierSendPushLogRepository */
-        public repository: INotifierSendPushLogRepository,
+        /** NotifierSendRequestRepository */
+        public repository: INotifierSendRequestRepository,
     ) {
         super();
     }
 
-    async search(dto: NotifierSendPushLogSearchDto, context?: ContextDto | null)
-        : Promise<SearchResultDto<NotifierSendPushLogModel>>
+    async search(dto: NotifierSendRequestSearchDto, context?: ContextDto | null)
+        : Promise<SearchResultDto<NotifierSendRequestModel>>
 
     async search<TSchema>(
-        dto: NotifierSendPushLogSearchDto,
+        dto: NotifierSendRequestSearchDto,
         context?: ContextDto | null,
         schemaClass?: Type<TSchema>
     ): Promise<SearchResultDto<Type<TSchema>>>
 
     async search<TSchema>(
-        dto: NotifierSendPushLogSearchDto,
+        dto: NotifierSendRequestSearchDto,
         context: ContextDto = null,
         schemaClass: Type<TSchema> = null,
-    ): Promise<SearchResultDto<NotifierSendPushLogModel | Type<TSchema>>> {
+    ): Promise<SearchResultDto<NotifierSendRequestModel | Type<TSchema>>> {
         await validateOrReject(dto);
 
-        const searchQuery: SearchQuery<NotifierSendPushLogModel> = schemaClass
+        const searchQuery: SearchQuery<NotifierSendRequestModel> = schemaClass
             ? SearchQuery.createFromSchema(schemaClass)
             : new SearchQuery<any>();
         searchQuery.alias('model');
 
-        ['id', 'sendLogId', 'messageId', 'errorCode', 'errorMessage'].forEach(key => {
+        ['id'].forEach(key => {
             if (dto[key]) {
                 searchQuery.andWhere(['=', key, dto[key]]);
             }
@@ -55,7 +55,7 @@ export class NotifierSendPushLogService extends CrudService<
         );
         if (schemaClass) {
             result.items = result.items.map(
-                (model: NotifierSendPushLogModel) => this.modelToSchema<TSchema>(model, schemaClass),
+                (model: NotifierSendRequestModel) => this.modelToSchema<TSchema>(model, schemaClass),
             );
         }
         return result;
