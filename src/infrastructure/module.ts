@@ -1,7 +1,5 @@
 import {ModuleHelper} from '@steroidsjs/nest/infrastructure/helpers/ModuleHelper';
 import {INotifierService} from '@steroidsjs/nest-modules/notifier/services/INotifierService';
-import {MailerService} from '@nestjs-modules/mailer';
-import {FirebasePushProvider} from '../domain/providers/FirebasePushProvider';
 import {NotifierSendLogService} from '../domain/services/NotifierSendLogService';
 import {NotifierSendPushLogService} from '../domain/services/NotifierSendPushLogService';
 import {INotifierSendLogRepository} from '../domain/interfaces/INotifierSendLogRepository';
@@ -12,7 +10,6 @@ import {INotifierModuleConfig} from './config';
 import {INotifierSendRequestRepository} from '../domain/interfaces/INotifierSendRequestRepository';
 import { NotifierSendRequestRepository } from './repositories/NotifierSendRequestRepository';
 import {NotifierSendRequestService} from '../domain/services/NotifierSendRequestService';
-import {MailProvider} from '../domain/providers/MailProvider';
 import {SmscCallProvider} from '../domain/providers/SmscCallProvider';
 import {SmscSmsProvider} from '../domain/providers/SmscSmsProvider';
 import {SmscVoiceMessageProvider} from '../domain/providers/SmscVoiceMessageProvider';
@@ -21,7 +18,6 @@ import {SmsRuSmsProvider} from '../domain/providers/SmsRuSmsProvider';
 import {IProviderService} from '../domain/interfaces/IProviderService';
 import {NotifierService} from '../domain/services/NotifierService';
 import {ProviderService} from '../domain/services/ProviderService';
-import {IMailService} from '../domain/interfaces/IMailService';
 
 export default (config: INotifierModuleConfig) => ({
     providers: [
@@ -48,17 +44,6 @@ export default (config: INotifierModuleConfig) => ({
         ]),
 
         // Providers
-        ModuleHelper.provide(FirebasePushProvider, [
-            NotifierSendLogService,
-            NotifierSendPushLogService,
-        ]),
-        ModuleHelper.provide(IMailService, [
-            MailerService,
-        ]),
-        ModuleHelper.provide(MailProvider, [
-            IMailService,
-            NotifierSendLogService,
-        ]),
         ModuleHelper.provide(SmscCallProvider, [
             NotifierSendLogService,
         ]),
@@ -80,7 +65,13 @@ export default (config: INotifierModuleConfig) => ({
         ModuleHelper.provide(INotifierService, NotifierService, [
             IProviderService,
             NotifierSendRequestService,
-            [],
+            [
+                SmscCallProvider,
+                SmscSmsProvider,
+                SmscVoiceMessageProvider,
+                SmsRuCallProvider,
+                SmsRuSmsProvider,
+            ],
         ]),
     ],
     exports: [
