@@ -61,7 +61,10 @@ export default (config: INotifierModuleConfig) => ({
         ]),
 
         // Services
-        ModuleHelper.provide(INotifierProviderService, NotifierProviderService),
+        {
+            provide: INotifierProviderService,
+            useClass: NotifierProviderService,
+        },
         ModuleHelper.provide(INotifierService, NotifierService, [
             INotifierProviderService,
             NotifierSendRequestService,
