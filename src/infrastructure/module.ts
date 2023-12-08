@@ -15,9 +15,9 @@ import {SmscSmsProvider} from '../domain/providers/SmscSmsProvider';
 import {SmscVoiceMessageProvider} from '../domain/providers/SmscVoiceMessageProvider';
 import {SmsRuCallProvider} from '../domain/providers/SmsRuCallProvider';
 import {SmsRuSmsProvider} from '../domain/providers/SmsRuSmsProvider';
-import {IProviderService} from '../domain/interfaces/IProviderService';
+import {INotifierProviderService} from '../domain/interfaces/INotifierProviderService';
 import {NotifierService} from '../domain/services/NotifierService';
-import {ProviderService} from '../domain/services/ProviderService';
+import {NotifierProviderService} from '../domain/services/NotifierProviderService';
 
 export default (config: INotifierModuleConfig) => ({
     providers: [
@@ -61,9 +61,9 @@ export default (config: INotifierModuleConfig) => ({
         ]),
 
         // Services
-        ModuleHelper.provide(IProviderService, ProviderService),
+        ModuleHelper.provide(INotifierProviderService, NotifierProviderService),
         ModuleHelper.provide(INotifierService, NotifierService, [
-            IProviderService,
+            INotifierProviderService,
             NotifierSendRequestService,
             [
                 SmscCallProvider,

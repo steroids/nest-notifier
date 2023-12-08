@@ -27,32 +27,36 @@ import {ModuleHelper} from '@steroidsjs/nest/infrastructure/helpers/ModuleHelper
 import {NotifierService} from '@steroidsjs/nest-notifier/domain/services/NotifierService';
 import {SmscSmsProvider} from '@steroidsjs/nest-notifier/domain/providers/SmscSmsProvider';
 import {FirebasePushProvider} from '@steroidsjs/nest-notifier/domain/providers/FirebasePushProvider';
-import {IProviderService} from '@steroidsjs/nest-notifier/domain/interfaces/IProviderService';
+import {INotifierProviderService} from '@steroidsjs/nest-notifier/domain/interfaces/INotifierProviderService';
 import {NotifierSendRequestService} from '@steroidsjs/nest-notifier/domain/services/NotifierSendRequestService';
 
 @Module({
     ...coreModule,
-    module: () => ({
-        imports: [],
-        providers: [
-            SmscSmsProvider,
-            FirebasePushProvider,
-            ModuleHelper.provide(NotifierService, INotifierService, [
-                IProviderService,
-                NotifierSendRequestService,
-                [
-                    SmscSmsProvider,
-                    FirebasePushProvider,
-                ],
-            ]),
-        ],
-        exports: [
-            INotifierService,
-        ],
-    }),
+    module: (config) => {
+        const module = coreModule.module(config) as any;
+        return {
+            ...module,
+            imports: [],
+            providers: [
+                ...module.providers,
+                SmscSmsProvider,
+                FirebasePushProvider,
+                ModuleHelper.provide(NotifierService, INotifierService, [
+                    INotifierProviderService,
+                    NotifierSendRequestService,
+                    [
+                        SmscSmsProvider,
+                        FirebasePushProvider,
+                    ],
+                ]),
+            ],
+            exports: [
+                INotifierService,
+            ],
+        };
+    },
 })
 export class NotifierModule {}
-
 ```
 Set the environment variables required for the providers you have connected. You can look at the [configuration file](https://github.com/steroids/nest-notifier/blob/main/src/infrastructure/config.ts) to determine the required variables. You can also define your own configuration file that implements the INotifierModuleConfig interface and add this file to the module.
 

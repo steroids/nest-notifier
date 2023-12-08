@@ -5,14 +5,14 @@ import NotifierProviderType from '@steroidsjs/nest-modules/notifier/enums/Notifi
 import {INotifierProvider} from '../interfaces/INotifierProvider';
 import NotifierProviderCollisionException from '../exceptions/NotifierProviderCollisionException';
 import NotifierProviderNotFoundException from '../exceptions/NotifierProviderNotFoundException';
-import {IProviderService} from '../interfaces/IProviderService';
+import {INotifierProviderService} from '../interfaces/INotifierProviderService';
 import {NotifierSendRequestService} from './NotifierSendRequestService';
 import {NotifierSendRequestSaveDto} from '../dtos/NotifierSendRequestSaveDto';
 import NotifierProviderNotSpecifiedException from '../exceptions/NotifierProviderNotSpecifiedException';
 
 export class NotifierService {
     constructor(
-        protected readonly providerService: IProviderService,
+        protected readonly providerService: INotifierProviderService,
         protected readonly sendRequestService: NotifierSendRequestService,
         public providers: INotifierProvider[],
     ) {}
