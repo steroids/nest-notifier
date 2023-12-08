@@ -17,7 +17,14 @@ export class NotifierService {
         public providers: INotifierProvider[],
     ) {}
 
-    async send(options: INotifierSendOptions) {
+    public async send(options: INotifierSendOptions): Promise<{
+        sms?: any,
+        call?: any,
+        mail?: any,
+        push?: any,
+        voice?: any,
+        sendRequestId: number,
+    }> {
         const typesMap = {
             sms: NotifierProviderType.SMS,
             call: NotifierProviderType.CALL,
@@ -29,14 +36,7 @@ export class NotifierService {
             new NotifierSendRequestSaveDto(),
         );
 
-        const response: {
-            sms?: any,
-            call?: any,
-            mail?: any,
-            push?: any,
-            voice?: any,
-            sendRequestId: number,
-        } = {
+        const response = {
             sendRequestId: sendRequest.id,
         };
         for (const type in typesMap) {
