@@ -23,7 +23,7 @@ export class SmscSmsProvider implements INotifierProvider {
         logsIds: number[],
         providerPayload: any,
     }> {
-        const credentials = ModuleHelper.getConfig<INotifierModuleConfig>(NotifierModule).providers.call.smsc;
+        const credentials = ModuleHelper.getConfig<INotifierModuleConfig>(NotifierModule).providers.sms.smsc;
 
         try {
             if (!credentials.login) {

@@ -21,7 +21,7 @@ export class SmsRuSmsProvider implements INotifierProvider {
     constructor(private notifierSendLogService: NotifierSendLogService) {}
 
     async send(options: INotifierSmsOptions) {
-        const credentials = ModuleHelper.getConfig<INotifierModuleConfig>(NotifierModule).providers.call.smsc;
+        const credentials = ModuleHelper.getConfig<INotifierModuleConfig>(NotifierModule).providers.sms.smsRu;
 
         try {
             if (!credentials.apiId) {
