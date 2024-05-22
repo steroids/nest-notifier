@@ -29,7 +29,8 @@ export class SmsRuSmsProvider implements INotifierProvider {
             }
 
             const normalizedPhones = [].concat(options.phone)
-                .map(phone => phone.replace('/[^0-9]+/', '').replace('/^8/', '7'));
+                .map(phone => phone.replace('/[^0-9]+/', '').replace('/^8/', '7'))
+                .join(',');
 
             const params: any = {
                 api_id: credentials.apiId,
