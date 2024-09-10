@@ -1,9 +1,9 @@
-import { initializeApp } from 'firebase-admin/app';
+import {initializeApp} from 'firebase-admin/app';
 import {credential} from 'firebase-admin';
 import {BatchResponse, getMessaging} from 'firebase-admin/messaging';
 import {DataMapper} from '@steroidsjs/nest/usecases/helpers/DataMapper';
 import NotifierProviderType from '@steroidsjs/nest-modules/notifier/enums/NotifierProviderType';
-import { INotifierPushOptions } from '@steroidsjs/nest-modules/notifier/interfaces/INotifierPushOptions';
+import {INotifierPushOptions} from '@steroidsjs/nest-modules/notifier/interfaces/INotifierPushOptions';
 import {INotifierProvider} from '../interfaces/INotifierProvider';
 import {NotifierSendLogSaveDto} from '../dtos/NotifierSendLogSaveDto';
 import {NotifierStatusEnum} from '../enums/NotifierStatusEnum';
@@ -30,7 +30,7 @@ export class FirebasePushProvider implements INotifierProvider {
         providerPayload: BatchResponse,
     }> {
         try {
-            const batchResponse = await getMessaging().sendMulticast(options);
+            const batchResponse = await getMessaging().sendEachForMulticast(options);
             const logsIds = await Promise.all(batchResponse.responses.map(async (response, index) => {
                 const logDto = DataMapper.create<NotifierSendLogSaveDto>(NotifierSendLogSaveDto, {
                     sendRequestId: options.sendRequestId,

@@ -1,6 +1,6 @@
 {
   "name": "@steroidsjs/nest-notifier",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Steroids Nest Notifier Module",
   "author": "",
   "license": "MIT",
@@ -9,11 +9,11 @@
     "watch": "tsc -p tsconfig-debug.json"
   },
   "dependencies": {
-    "@nestjs/common": "^9.2.1",
-    "lodash": "^4.17.21",
-    "firebase-admin": "^11.5.0",
     "@nestjs-modules/mailer": "^1.8.1",
-    "axios": "^1.2.6"
+    "@nestjs/common": "^9.2.1",
+    "axios": "^1.2.6",
+    "firebase-admin": "^12.4.0",
+    "lodash": "^4.17.21"
   },
   "peerDependencies": {
     "@steroidsjs/nest": "^1",
@@ -22,17 +22,18 @@
     "@steroidsjs/typeorm": "^0"
   },
   "devDependencies": {
+    "@jest/globals": "^29.4.1",
+    "@nestjs/schematics": "^9.0.4",
+    "@nestjs/testing": "^9.2.1",
+    "@steroidsjs/eslint-config": "^2.1.2",
     "@steroidsjs/nest": "^1.7.3",
     "@steroidsjs/nest-modules": "^0.1.4",
     "@steroidsjs/nest-typeorm": "^9.0.3",
     "@steroidsjs/typeorm": "^0.3.11",
-    "@steroidsjs/eslint-config": "^2.1.2",
-    "copyfiles": "^2.4.1",
-    "@nestjs/schematics": "^9.0.4",
-    "@nestjs/testing": "^9.2.1",
     "@types/node": "^18.11.18",
     "@typescript-eslint/eslint-plugin": "^5.49.0",
     "@typescript-eslint/parser": "^5.49.0",
+    "copyfiles": "^2.4.1",
     "eslint": "^8.33.0",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-prettier": "^4.2.1",
@@ -41,7 +42,6 @@
     "ts-loader": "^9.4.2",
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.1.2",
-    "typescript": "^4.9.4",
-    "@jest/globals": "^29.4.1"
+    "typescript": "^4.9.4"
   }
 }
