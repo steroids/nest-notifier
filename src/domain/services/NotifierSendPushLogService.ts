@@ -58,6 +58,7 @@ export class NotifierSendPushLogService extends CrudService<
                 (model: NotifierSendPushLogModel) => this.modelToSchema<TSchema>(model, schemaClass),
             );
         }
+        // @ts-ignore
         return result;
     }
 }

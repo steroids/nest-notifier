@@ -1,6 +1,6 @@
 {
   "name": "@steroidsjs/nest-notifier",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Steroids Nest Notifier Module",
   "author": "",
   "license": "MIT",
@@ -16,7 +16,7 @@
     "lodash": "^4.17.21"
   },
   "peerDependencies": {
-    "@steroidsjs/nest": "^1",
+    "@steroidsjs/nest": "^3.2.0",
     "@steroidsjs/nest-modules": "^0",
     "@steroidsjs/nest-typeorm": "^9",
     "@steroidsjs/typeorm": "^0"
@@ -25,11 +25,11 @@
     "@jest/globals": "^29.4.1",
     "@nestjs/schematics": "^9.0.4",
     "@nestjs/testing": "^9.2.1",
-    "@steroidsjs/eslint-config": "^2.1.2",
-    "@steroidsjs/nest": "^1.7.3",
+    "@steroidsjs/eslint-config": "^3.0.1",
+    "@steroidsjs/nest": "^3.2.0",
     "@steroidsjs/nest-modules": "^0.1.4",
     "@steroidsjs/nest-typeorm": "^9.0.3",
-    "@steroidsjs/typeorm": "^0.3.11",
+    "@steroidsjs/typeorm": "^0.3.23",
     "@types/node": "^18.11.18",
     "@typescript-eslint/eslint-plugin": "^5.49.0",
     "@typescript-eslint/parser": "^5.49.0",

@@ -1,6 +1,6 @@
-import {TableFromModel} from '@steroidsjs/nest/infrastructure/decorators/TableFromModel';
 import {IDeepPartial} from '@steroidsjs/nest/usecases/interfaces/IDeepPartial';
+import {TypeOrmTableFromModel} from '@steroidsjs/nest/infrastructure/decorators/typeorm/TypeOrmTableFromModel';
 import {NotifierSendRequestModel} from '../../domain/models/NotifierSendRequestModel';
 
-@TableFromModel(NotifierSendRequestModel, 'notifier_send_request')
+@TypeOrmTableFromModel(NotifierSendRequestModel, 'notifier_send_request')
 export class NotifierSendRequestTable implements IDeepPartial<NotifierSendRequestModel> {}

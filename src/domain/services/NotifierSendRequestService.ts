@@ -58,6 +58,7 @@ export class NotifierSendRequestService extends CrudService<
                 (model: NotifierSendRequestModel) => this.modelToSchema<TSchema>(model, schemaClass),
             );
         }
+        // @ts-ignore
         return result;
     }
 }
