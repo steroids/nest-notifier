@@ -5,13 +5,42 @@ interface IProviderConfig {
     [providerName: string]: any,
 }
 
+interface ISmscConfig {
+    smsc: {
+        login: string,
+        password: string,
+    },
+}
+
+interface ISmsRuConfig {
+    smsRu: {
+        apiId: string,
+    },
+}
+
+interface IMailProviderConfig extends IProviderConfig {
+    host: string,
+    port: number,
+    sender: string,
+    password: string,
+    templateDir: string,
+}
+
+interface ISmsProviderConfig extends IProviderConfig, ISmscConfig, ISmsRuConfig {}
+
+interface ICallProviderConfig extends IProviderConfig, ISmscConfig, ISmsRuConfig {}
+
+interface IVoiceProviderConfig extends IProviderConfig, ISmscConfig {}
+
+interface IPushProviderConfig extends IProviderConfig {}
+
 export interface INotifierModuleConfig {
     providers?: {
-        mail?: IProviderConfig,
-        sms?: IProviderConfig,
-        call?: IProviderConfig,
-        voice?: IProviderConfig,
-        push?: IProviderConfig,
+        mail?: IMailProviderConfig,
+        sms?: ISmsProviderConfig,
+        call?: ICallProviderConfig,
+        voice?: IVoiceProviderConfig,
+        push?: IPushProviderConfig,
     },
 }
 
@@ -19,6 +48,11 @@ export default () => ({
     providers: {
         mail: {
             activeProvider: process.env.NOTIFIER_ACTIVE_MAIL_PROVIDER || 'mail',
+            host: process.env.MAIL_HOST,
+            port: parseInt(process.env.MAIL_PORT ?? '465', 10),
+            sender: process.env.MAIL_SENDER,
+            password: process.env.MAIL_PASSWORD,
+            templateDir: process.env.MAIL_TEMPLATE_DIR,
         },
         sms: {
             activeProvider: process.env.NOTIFIER_ACTIVE_SMS_PROVIDER,

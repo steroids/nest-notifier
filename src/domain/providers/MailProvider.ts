@@ -9,6 +9,7 @@ import {IMailService} from '../interfaces/IMailService';
 import {NotifierSendLogService} from '../services/NotifierSendLogService';
 import {NotifierSendLogSaveDto} from '../dtos/NotifierSendLogSaveDto';
 import {NotifierStatusEnum} from '../enums/NotifierStatusEnum';
+import {Inject} from "@nestjs/common";
 
 export class MailProvider implements INotifierProvider {
     public type = NotifierProviderType.MAIL;
@@ -17,7 +18,9 @@ export class MailProvider implements INotifierProvider {
 
     constructor(
         /** @see MailService **/
+        @Inject(IMailService)
         private mailService: IMailService,
+        @Inject(NotifierSendLogService)
         private notifierSendLogService: NotifierSendLogService,
     ) {}
 

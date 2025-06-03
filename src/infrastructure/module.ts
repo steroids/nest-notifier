@@ -18,8 +18,41 @@ import {SmsRuSmsProvider} from '../domain/providers/SmsRuSmsProvider';
 import {INotifierProviderService} from '../domain/interfaces/INotifierProviderService';
 import {NotifierService} from '../domain/services/NotifierService';
 import {NotifierProviderService} from '../domain/services/NotifierProviderService';
+import {IMailService} from "../domain/interfaces/IMailService";
+import MailService from "./services/MailService";
+import {MailProvider} from "../domain/providers/MailProvider";
+import {ModuleMetadata} from "@nestjs/common";
+import {MailerModule} from "@nestjs-modules/mailer";
+import {PugAdapter} from "@nestjs-modules/mailer/dist/adapters/pug.adapter";
 
 export default (config: INotifierModuleConfig) => ({
+    imports: [
+        config.providers.mail.host && MailerModule.forRoot({
+            transport: {
+                host: config.providers.mail.host,
+                port: config.providers.mail.port,
+                secure: true,
+                auth: {
+                    user: config.providers.mail.sender,
+                    pass: config.providers.mail.password,
+                },
+            },
+            defaults: {
+                from: config.providers.mail.sender,
+            },
+            ...(
+                config.providers.mail.templateDir && {
+                    template: {
+                        dir: config.providers.mail.templateDir,
+                        adapter: new PugAdapter(),
+                        options: {
+                            strict: true
+                        },
+                    },
+                }
+            ),
+        }),
+    ].filter(Boolean),
     providers: [
         {
             provide: INotifierSendRequestRepository,
@@ -32,6 +65,10 @@ export default (config: INotifierModuleConfig) => ({
         {
             provide: INotifierSendPushLogRepository,
             useClass: NotifierSendPushLogRepository,
+        },
+        {
+            provide: IMailService,
+            useClass: MailService,
         },
         ModuleHelper.provide(NotifierSendRequestService, [
             INotifierSendRequestRepository,
@@ -59,13 +96,14 @@ export default (config: INotifierModuleConfig) => ({
         ModuleHelper.provide(SmsRuSmsProvider, [
             NotifierSendLogService,
         ]),
+        MailProvider,
 
         // Services
         {
             provide: INotifierProviderService,
             useClass: NotifierProviderService,
         },
-        ModuleHelper.provide(INotifierService, NotifierService, [
+        ModuleHelper.provide(NotifierService, INotifierService, [
             INotifierProviderService,
             NotifierSendRequestService,
             [
@@ -74,10 +112,11 @@ export default (config: INotifierModuleConfig) => ({
                 SmscVoiceMessageProvider,
                 SmsRuCallProvider,
                 SmsRuSmsProvider,
-            ],
+                config.providers.mail.host && MailProvider,
+            ].filter(Boolean),
         ]),
     ],
     exports: [
         INotifierService,
     ],
-});
+}) as ModuleMetadata;
