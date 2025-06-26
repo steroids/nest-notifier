@@ -2,18 +2,24 @@ import {
     INotifierSendOptions,
 } from '@steroidsjs/nest-modules/notifier/interfaces/INotifierSendOptions';
 import NotifierProviderType from '@steroidsjs/nest-modules/notifier/enums/NotifierProviderType';
+import {Inject} from '@nestjs/common';
+import {INotifierService} from '@steroidsjs/nest-modules/notifier/services/INotifierService';
 import {INotifierProvider} from '../interfaces/INotifierProvider';
 import NotifierProviderCollisionException from '../exceptions/NotifierProviderCollisionException';
 import NotifierProviderNotFoundException from '../exceptions/NotifierProviderNotFoundException';
 import {INotifierProviderService} from '../interfaces/INotifierProviderService';
-import {NotifierSendRequestService} from './NotifierSendRequestService';
 import {NotifierSendRequestSaveDto} from '../dtos/NotifierSendRequestSaveDto';
 import NotifierProviderNotSpecifiedException from '../exceptions/NotifierProviderNotSpecifiedException';
+import {NotifierProvidersToken} from '../providers';
+import {NotifierSendRequestService} from './NotifierSendRequestService';
 
-export class NotifierService {
+export class NotifierService implements INotifierService {
     constructor(
+        @Inject(INotifierProviderService)
         protected readonly providerService: INotifierProviderService,
+        @Inject(NotifierSendRequestService)
         protected readonly sendRequestService: NotifierSendRequestService,
+        @Inject(NotifierProvidersToken)
         public providers: INotifierProvider[],
     ) {}
 

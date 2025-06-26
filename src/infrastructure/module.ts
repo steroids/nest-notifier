@@ -1,14 +1,13 @@
 import {ModuleHelper} from '@steroidsjs/nest/infrastructure/helpers/ModuleHelper';
 import {INotifierService} from '@steroidsjs/nest-modules/notifier/services/INotifierService';
+import {ModuleMetadata} from '@nestjs/common';
+import {MailerModule} from '@nestjs-modules/mailer';
+import {PugAdapter} from '@nestjs-modules/mailer/dist/adapters/pug.adapter';
 import {NotifierSendLogService} from '../domain/services/NotifierSendLogService';
 import {NotifierSendPushLogService} from '../domain/services/NotifierSendPushLogService';
 import {INotifierSendLogRepository} from '../domain/interfaces/INotifierSendLogRepository';
-import {NotifierSendLogRepository} from './repositories/NotifierSendLogRepository';
 import {INotifierSendPushLogRepository} from '../domain/interfaces/INotifierSendPushLogRepository';
-import {NotifierSendPushLogRepository} from './repositories/NotifierSendPushLogRepository';
-import {INotifierModuleConfig} from './config';
 import {INotifierSendRequestRepository} from '../domain/interfaces/INotifierSendRequestRepository';
-import { NotifierSendRequestRepository } from './repositories/NotifierSendRequestRepository';
 import {NotifierSendRequestService} from '../domain/services/NotifierSendRequestService';
 import {SmscCallProvider} from '../domain/providers/SmscCallProvider';
 import {SmscSmsProvider} from '../domain/providers/SmscSmsProvider';
@@ -18,12 +17,15 @@ import {SmsRuSmsProvider} from '../domain/providers/SmsRuSmsProvider';
 import {INotifierProviderService} from '../domain/interfaces/INotifierProviderService';
 import {NotifierService} from '../domain/services/NotifierService';
 import {NotifierProviderService} from '../domain/services/NotifierProviderService';
-import {IMailService} from "../domain/interfaces/IMailService";
-import MailService from "./services/MailService";
-import {MailProvider} from "../domain/providers/MailProvider";
-import {ModuleMetadata} from "@nestjs/common";
-import {MailerModule} from "@nestjs-modules/mailer";
-import {PugAdapter} from "@nestjs-modules/mailer/dist/adapters/pug.adapter";
+import {IMailService} from '../domain/interfaces/IMailService';
+import {MailProvider} from '../domain/providers/MailProvider';
+import {INotifierProvider} from '../domain/interfaces/INotifierProvider';
+import {getNotifierProviders, NotifierProvidersToken} from '../domain/providers';
+import MailService from './services/MailService';
+import {NotifierSendRequestRepository} from './repositories/NotifierSendRequestRepository';
+import {INotifierModuleConfig} from './config';
+import {NotifierSendPushLogRepository} from './repositories/NotifierSendPushLogRepository';
+import {NotifierSendLogRepository} from './repositories/NotifierSendLogRepository';
 
 export default (config: INotifierModuleConfig) => ({
     imports: [
@@ -46,7 +48,7 @@ export default (config: INotifierModuleConfig) => ({
                         dir: config.providers.mail.templateDir,
                         adapter: new PugAdapter(),
                         options: {
-                            strict: true
+                            strict: true,
                         },
                     },
                 }
@@ -103,18 +105,15 @@ export default (config: INotifierModuleConfig) => ({
             provide: INotifierProviderService,
             useClass: NotifierProviderService,
         },
-        ModuleHelper.provide(NotifierService, INotifierService, [
-            INotifierProviderService,
-            NotifierSendRequestService,
-            [
-                SmscCallProvider,
-                SmscSmsProvider,
-                SmscVoiceMessageProvider,
-                SmsRuCallProvider,
-                SmsRuSmsProvider,
-                config.providers.mail.host && MailProvider,
-            ].filter(Boolean),
-        ]),
+        {
+            provide: INotifierService,
+            useClass: NotifierService,
+        },
+        {
+            provide: NotifierProvidersToken,
+            useFactory: (...providers: INotifierProvider[]) => providers,
+            inject: getNotifierProviders(config),
+        },
     ],
     exports: [
         INotifierService,
