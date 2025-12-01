@@ -22,8 +22,8 @@
 yarn add @steroidsjs/nest-notifier @steroidsjs/nest-modules
 ```
 
-2. Определить NotifierModule с конфигурацией из `@steroidsjs/nest-notifier`. 
-Также можно выбирать только нужные провайдеры уведомлений для `NotifierService`:
+2. Определить `NotifierModule` с конфигурацией из `@steroidsjs/nest-notifier`. 
+Также нужно выбрать провайдеры уведомлений, которые инъецируются по токену `NOTIFIER_PROVIDERS_LIST`:
 
 ```typescript
 import {Module} from '@steroidsjs/nest/infrastructure/decorators/Module';
@@ -35,6 +35,7 @@ import {SmscSmsProvider} from '@steroidsjs/nest-notifier/domain/providers/SmscSm
 import {FirebasePushProvider} from '@steroidsjs/nest-notifier/domain/providers/FirebasePushProvider';
 import coreModule from '@steroidsjs/nest-notifier';
 import notifierConfig from '@steroidsjs/nest-notifier/infrastructure/config';
+import {NOTIFIER_PROVIDERS_LIST} from '@steroidsjs/nest-notifier/domain/interfaces/INotifierProvidersList'
 
 @Module({
     ...coreModule,
@@ -52,14 +53,16 @@ import notifierConfig from '@steroidsjs/nest-notifier/infrastructure/config';
             ],
             providers: [
                 ...(module.providers ?? []),
-                ModuleHelper.provide(NotifierService, INotifierService, [
-                    INotifierProviderService,
-                    NotifierSendRequestService,
-                    [
-                        SmscSmsProvider,
+                {
+                    provide: NOTIFIER_PROVIDERS_LIST,
+                    inject: [
                         FirebasePushProvider,
+                        SmscSmsProvider,
                     ],
-                ]),
+                    useFactory: (...providers: INotifierProvider[]) => providers,
+                },
+                FirebasePushProvider,
+                SmscSmsProvider,
             ],
             exports: [
                 ...(module.exports ?? []),
