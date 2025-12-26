@@ -1,14 +1,15 @@
 import {CrudService} from '@steroidsjs/nest/usecases/services/CrudService';
 import {ContextDto} from '@steroidsjs/nest/usecases/dtos/ContextDto';
 import {SearchResultDto} from '@steroidsjs/nest/usecases/dtos/SearchResultDto';
-import {Type} from '@nestjs/common';
-import {validateOrReject} from '@steroidsjs/nest/usecases/helpers/ValidationHelper';
+import {Inject, Injectable, Type} from '@nestjs/common';
 import SearchQuery from '@steroidsjs/nest/usecases/base/SearchQuery';
+import {ValidationHelper} from '@steroidsjs/nest/usecases/helpers/ValidationHelper';
 import {INotifierSendLogRepository} from '../interfaces/INotifierSendLogRepository';
 import {NotifierSendLogModel} from '../models/NotifierSendLogModel';
 import {NotifierSendLogSaveDto} from '../dtos/NotifierSendLogSaveDto';
 import {NotifierSendLogSearchDto} from '../dtos/NotifierSendLogSearchDto';
 
+@Injectable()
 export class NotifierSendLogService extends CrudService<
     NotifierSendLogModel,
     NotifierSendLogSearchDto,
@@ -17,6 +18,7 @@ export class NotifierSendLogService extends CrudService<
 
     constructor(
         /** NotifierSendLogRepository */
+        @Inject(INotifierSendLogRepository)
         public repository: INotifierSendLogRepository,
     ) {
         super();
@@ -36,7 +38,7 @@ export class NotifierSendLogService extends CrudService<
         context: ContextDto = null,
         schemaClass: Type<TSchema> = null,
     ): Promise<SearchResultDto<NotifierSendLogModel | Type<TSchema>>> {
-        await validateOrReject(dto);
+        await ValidationHelper.validate(dto);
 
         const searchQuery: SearchQuery<NotifierSendLogModel> = schemaClass
             ? SearchQuery.createFromSchema(schemaClass)

@@ -1,4 +1,3 @@
-import {ModuleHelper} from '@steroidsjs/nest/infrastructure/helpers/ModuleHelper';
 import {INotifierService} from '@steroidsjs/nest-modules/notifier/services/INotifierService';
 import {NotifierSendLogService} from '../domain/services/NotifierSendLogService';
 import {NotifierSendPushLogService} from '../domain/services/NotifierSendPushLogService';
@@ -28,15 +27,9 @@ export default (config: INotifierModuleConfig) => ({
             provide: INotifierSendPushLogRepository,
             useClass: NotifierSendPushLogRepository,
         },
-        ModuleHelper.provide(NotifierSendRequestService, [
-            INotifierSendRequestRepository,
-        ]),
-        ModuleHelper.provide(NotifierSendLogService, [
-            INotifierSendLogRepository,
-        ]),
-        ModuleHelper.provide(NotifierSendPushLogService, [
-            INotifierSendPushLogRepository,
-        ]),
+        NotifierSendRequestService,
+        NotifierSendLogService,
+        NotifierSendPushLogService,
 
         // Services
         {

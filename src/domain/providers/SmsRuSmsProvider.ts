@@ -7,18 +7,22 @@ import {ModuleHelper} from '@steroidsjs/nest/infrastructure/helpers/ModuleHelper
 import {NotifierModule} from '@steroidsjs/nest-modules/notifier/NotifierModule';
 import {DataMapper} from '@steroidsjs/nest/usecases/helpers/DataMapper';
 import NotifierSendException from '@steroidsjs/nest-modules/notifier/exceptions/NotifierSendException';
+import {Injectable} from '@nestjs/common';
 import {INotifierProvider} from '../interfaces/INotifierProvider';
 import {INotifierModuleConfig} from '../../infrastructure/config';
 import {NotifierSendLogService} from '../services/NotifierSendLogService';
 import {NotifierSendLogSaveDto} from '../dtos/NotifierSendLogSaveDto';
 import {NotifierStatusEnum} from '../enums/NotifierStatusEnum';
 
+@Injectable()
 export class SmsRuSmsProvider implements INotifierProvider {
     public type = NotifierProviderType.SMS;
 
     public name = 'smsRu';
 
-    constructor(private notifierSendLogService: NotifierSendLogService) {}
+    constructor(
+        private readonly notifierSendLogService: NotifierSendLogService,
+    ) {}
 
     async send(options: INotifierSmsOptions) {
         const credentials = ModuleHelper.getConfig<INotifierModuleConfig>(NotifierModule).providers.sms.smsRu;

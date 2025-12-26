@@ -4,6 +4,7 @@ import {BatchResponse, getMessaging} from 'firebase-admin/messaging';
 import {DataMapper} from '@steroidsjs/nest/usecases/helpers/DataMapper';
 import NotifierProviderType from '@steroidsjs/nest-modules/notifier/enums/NotifierProviderType';
 import {INotifierPushOptions} from '@steroidsjs/nest-modules/notifier/interfaces/INotifierPushOptions';
+import {Injectable} from '@nestjs/common';
 import {INotifierProvider} from '../interfaces/INotifierProvider';
 import {NotifierSendLogSaveDto} from '../dtos/NotifierSendLogSaveDto';
 import {NotifierStatusEnum} from '../enums/NotifierStatusEnum';
@@ -11,14 +12,15 @@ import {NotifierSendPushLogSaveDto} from '../dtos/NotifierSendPushLogSaveDto';
 import {NotifierSendLogService} from '../services/NotifierSendLogService';
 import {NotifierSendPushLogService} from '../services/NotifierSendPushLogService';
 
+@Injectable()
 export class FirebasePushProvider implements INotifierProvider {
     public type = NotifierProviderType.PUSH;
 
     public name = 'firebase';
 
     constructor(
-        private notifierSendLogService: NotifierSendLogService,
-        private notifierSendPushLogService: NotifierSendPushLogService,
+        private readonly notifierSendLogService: NotifierSendLogService,
+        private readonly notifierSendPushLogService: NotifierSendPushLogService,
     ) {
         initializeApp({
             credential: credential.applicationDefault(),

@@ -7,18 +7,22 @@ import NotifierSendException from '@steroidsjs/nest-modules/notifier/exceptions/
 import {ModuleHelper} from '@steroidsjs/nest/infrastructure/helpers/ModuleHelper';
 import {NotifierModule} from '@steroidsjs/nest-modules/notifier/NotifierModule';
 import {DataMapper} from '@steroidsjs/nest/usecases/helpers/DataMapper';
+import {Injectable} from '@nestjs/common';
 import {INotifierProvider} from '../interfaces/INotifierProvider';
 import {INotifierModuleConfig} from '../../infrastructure/config';
 import {NotifierSendLogService} from '../services/NotifierSendLogService';
 import {NotifierSendLogSaveDto} from '../dtos/NotifierSendLogSaveDto';
 import {NotifierStatusEnum} from '../enums/NotifierStatusEnum';
 
+@Injectable()
 export class SmscVoiceMessageProvider implements INotifierProvider {
     public type = NotifierProviderType.VOICE;
 
     public name = 'smsc';
 
-    constructor(private notifierSendLogService: NotifierSendLogService) {}
+    constructor(
+        private readonly notifierSendLogService: NotifierSendLogService,
+    ) {}
 
     async send(options: INotifierVoiceMessageOptions): Promise<{
         logsIds: number[],

@@ -4,12 +4,14 @@ import {
 } from '@steroidsjs/nest-modules/notifier/interfaces/INotifierSendOptions';
 import {DataMapper} from '@steroidsjs/nest/usecases/helpers/DataMapper';
 import {BatchResponse} from 'firebase-admin/lib/messaging';
+import {Injectable} from '@nestjs/common';
 import {INotifierProvider} from '../interfaces/INotifierProvider';
 import {IMailService} from '../interfaces/IMailService';
 import {NotifierSendLogService} from '../services/NotifierSendLogService';
 import {NotifierSendLogSaveDto} from '../dtos/NotifierSendLogSaveDto';
 import {NotifierStatusEnum} from '../enums/NotifierStatusEnum';
 
+@Injectable()
 export class MailProvider implements INotifierProvider {
     public type = NotifierProviderType.MAIL;
 
