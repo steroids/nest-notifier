@@ -63,4 +63,8 @@ export class NotifierSendRequestService extends CrudService<
         // @ts-ignore
         return result;
     }
+
+    isDbTransactionActive(): boolean {
+        return this.repository.isDbTransactionActive();
+    }
 }

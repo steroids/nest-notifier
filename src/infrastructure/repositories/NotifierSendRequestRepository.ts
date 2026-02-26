@@ -15,4 +15,8 @@ export class NotifierSendRequestRepository extends CrudRepository<NotifierSendRe
     }
 
     protected modelClass = NotifierSendRequestModel;
+
+    public isDbTransactionActive(): boolean {
+        return !!this.dbRepository.manager.queryRunner?.isTransactionActive;
+    }
 }

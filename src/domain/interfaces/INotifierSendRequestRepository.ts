@@ -3,4 +3,6 @@ import {NotifierSendRequestModel} from '../models/NotifierSendRequestModel';
 
 export const INotifierSendRequestRepository = 'INotifierSendRequestRepository';
 
-export type INotifierSendRequestRepository = ICrudRepository<NotifierSendRequestModel>
+export interface INotifierSendRequestRepository extends ICrudRepository<NotifierSendRequestModel> {
+    isDbTransactionActive(): boolean,
+}

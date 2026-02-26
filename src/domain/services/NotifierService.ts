@@ -29,6 +29,13 @@ export class NotifierService {
         voice?: any,
         sendRequestId: number,
     }> {
+        if (this.sendRequestService.isDbTransactionActive()) {
+            // External provider calls inside an open DB transaction can lead to long "idle in transaction" sessions.
+            // Call notifier send after commit (for example, via post-commit hooks / outbox).
+            console.warn('[nest-notifier] NotifierService.send() called inside active DB transaction. '
+                + 'This may cause "idle in transaction" while waiting for external provider responses.');
+        }
+
         const typesMap = {
             sms: NotifierProviderType.SMS,
             call: NotifierProviderType.CALL,
