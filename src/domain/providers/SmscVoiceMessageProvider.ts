@@ -14,6 +14,9 @@ import {NotifierSendLogService} from '../services/NotifierSendLogService';
 import {NotifierSendLogSaveDto} from '../dtos/NotifierSendLogSaveDto';
 import {NotifierStatusEnum} from '../enums/NotifierStatusEnum';
 
+/**
+ * Провайдер для отправки голосовых сообщений через Smsc.ru.
+ */
 @Injectable()
 export class SmscVoiceMessageProvider implements INotifierProvider {
     public type = NotifierProviderType.VOICE;
