@@ -14,6 +14,9 @@ import {NotifierSendLogService} from '../services/NotifierSendLogService';
 import {NotifierSendLogSaveDto} from '../dtos/NotifierSendLogSaveDto';
 import {NotifierStatusEnum} from '../enums/NotifierStatusEnum';
 
+/**
+ * Провайдер для отправки SMS через SmsRu.
+ */
 @Injectable()
 export class SmsRuSmsProvider implements INotifierProvider {
     public type = NotifierProviderType.SMS;

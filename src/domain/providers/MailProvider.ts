@@ -11,6 +11,12 @@ import {NotifierSendLogService} from '../services/NotifierSendLogService';
 import {NotifierSendLogSaveDto} from '../dtos/NotifierSendLogSaveDto';
 import {NotifierStatusEnum} from '../enums/NotifierStatusEnum';
 
+/**
+ * Провайдер для отправки email-уведомлений.
+ *
+ * Примечание: Для работы MailProvider вы также должны [подключить MailerModule](https://nest-modules.github.io/mailer/docs/mailer#configuration)
+ * из @nestjs-modules/mailer к своему модулю
+ */
 @Injectable()
 export class MailProvider implements INotifierProvider {
     public type = NotifierProviderType.MAIL;
