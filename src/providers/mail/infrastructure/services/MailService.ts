@@ -4,7 +4,7 @@ import {INotifierMailOptions} from '@steroidsjs/nest-modules/notifier/interfaces
 import {IMailService} from '../../domain/interfaces/IMailService';
 
 @Injectable()
-export default class MailService implements IMailService {
+export class MailService implements IMailService {
     constructor(private mailerService: MailerService) {
     }
 

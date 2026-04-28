@@ -8,15 +8,12 @@ import {NotifierModule} from '@steroidsjs/nest-modules/notifier/NotifierModule';
 import {DataMapper} from '@steroidsjs/nest/usecases/helpers/DataMapper';
 import NotifierSendException from '@steroidsjs/nest-modules/notifier/exceptions/NotifierSendException';
 import {Injectable} from '@nestjs/common';
-import {INotifierProvider} from '../interfaces/INotifierProvider';
-import {INotifierModuleConfig} from '../../infrastructure/config';
-import {NotifierSendLogService} from '../services/NotifierSendLogService';
-import {NotifierSendLogSaveDto} from '../dtos/NotifierSendLogSaveDto';
-import {NotifierStatusEnum} from '../enums/NotifierStatusEnum';
+import {INotifierProvider} from '../../../../domain/interfaces/INotifierProvider';
+import {INotifierModuleConfig} from '../../../../infrastructure/config';
+import {NotifierSendLogService} from '../../../../domain/services/NotifierSendLogService';
+import {NotifierSendLogSaveDto} from '../../../../domain/dtos/NotifierSendLogSaveDto';
+import {NotifierStatusEnum} from '../../../../domain/enums/NotifierStatusEnum';
 
-/**
- * Провайдер для отправки SMS через SmsRu.
- */
 @Injectable()
 export class SmsRuSmsProvider implements INotifierProvider {
     public type = NotifierProviderType.SMS;

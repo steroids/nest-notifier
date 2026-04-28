@@ -5,18 +5,12 @@ import {
 import {DataMapper} from '@steroidsjs/nest/usecases/helpers/DataMapper';
 import {BatchResponse} from 'firebase-admin/lib/messaging';
 import {Injectable} from '@nestjs/common';
-import {INotifierProvider} from '../interfaces/INotifierProvider';
-import {IMailService} from '../interfaces/IMailService';
-import {NotifierSendLogService} from '../services/NotifierSendLogService';
-import {NotifierSendLogSaveDto} from '../dtos/NotifierSendLogSaveDto';
-import {NotifierStatusEnum} from '../enums/NotifierStatusEnum';
+import {INotifierProvider} from '../../../../domain/interfaces/INotifierProvider';
+import {IMailService} from '../../domain/interfaces/IMailService';
+import {NotifierSendLogService} from '../../../../domain/services/NotifierSendLogService';
+import {NotifierSendLogSaveDto} from '../../../../domain/dtos/NotifierSendLogSaveDto';
+import {NotifierStatusEnum} from '../../../../domain/enums/NotifierStatusEnum';
 
-/**
- * Провайдер для отправки email-уведомлений.
- *
- * Примечание: Для работы MailProvider вы также должны [подключить MailerModule](https://nest-modules.github.io/mailer/docs/mailer#configuration)
- * из @nestjs-modules/mailer к своему модулю
- */
 @Injectable()
 export class MailProvider implements INotifierProvider {
     public type = NotifierProviderType.MAIL;
