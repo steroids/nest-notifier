@@ -5,19 +5,13 @@ import {DataMapper} from '@steroidsjs/nest/usecases/helpers/DataMapper';
 import NotifierProviderType from '@steroidsjs/nest-modules/notifier/enums/NotifierProviderType';
 import {INotifierPushOptions} from '@steroidsjs/nest-modules/notifier/interfaces/INotifierPushOptions';
 import {Injectable} from '@nestjs/common';
-import {INotifierProvider} from '../interfaces/INotifierProvider';
-import {NotifierSendLogSaveDto} from '../dtos/NotifierSendLogSaveDto';
-import {NotifierStatusEnum} from '../enums/NotifierStatusEnum';
-import {NotifierSendPushLogSaveDto} from '../dtos/NotifierSendPushLogSaveDto';
-import {NotifierSendLogService} from '../services/NotifierSendLogService';
-import {NotifierSendPushLogService} from '../services/NotifierSendPushLogService';
+import {INotifierProvider} from '../../../../domain/interfaces/INotifierProvider';
+import {NotifierSendLogSaveDto} from '../../../../domain/dtos/NotifierSendLogSaveDto';
+import {NotifierStatusEnum} from '../../../../domain/enums/NotifierStatusEnum';
+import {NotifierSendPushLogSaveDto} from '../../../../domain/dtos/NotifierSendPushLogSaveDto';
+import {NotifierSendLogService} from '../../../../domain/services/NotifierSendLogService';
+import {NotifierSendPushLogService} from '../../../../domain/services/NotifierSendPushLogService';
 
-/**
- * Провайдер для отправки push-уведомлений через Firebase Cloud Messaging.
- *
- * Для работы FirebasePushProvider вам необходимо [получить ключ сервера Firebase](https://firebase.google.com/docs/cloud-messaging/auth-server?hl=ru)
- * и указать путь к нему в переменной среды вашей операционной системы GOOGLE_APPLICATION_CREDENTIALS.
- */
 @Injectable()
 export class FirebasePushProvider implements INotifierProvider {
     public type = NotifierProviderType.PUSH;

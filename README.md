@@ -23,7 +23,7 @@
 нужно:
 1. Добавить в проект саму библиотеку @steroidsjs/nest-notifier
 2. Добавить в проект @steroidsjs/nest-modules, которая содержит соответствующие интерфейсы
-3. При помощи декоратора `@Module` определить `NotifierModule` с конфигурацией из `@steroidsjs/nest-notifier`.
+3. Определить локальный `NotifierModule` и импортировать в него `CoreNotifierModule.registerAsync(...)`.
 4. Импортировать созданный `NotifierModule` в главный модуль приложения.
 5. Сгенерировать и запустить миграции для создания таблиц в базе данных
 
@@ -37,42 +37,36 @@
 yarn add @steroidsjs/nest-notifier @steroidsjs/nest-modules
 ```
 
-2. Определим `NotifierModule` с конфигурацией из `@steroidsjs/nest-notifier`. 
+2. Определим локальный `NotifierModule` и подключим нужные provider-модули.
 
 ```typescript
+import {NotifierModule as CoreNotifierModule} from '@steroidsjs/nest-notifier/infrastructure/NotifierModule';
+import {firebasePushProviderModule} from '@steroidsjs/nest-notifier/providers/firebase';
 import {Module} from '@steroidsjs/nest/infrastructure/decorators/Module';
-import {INotifierModuleConfig} from '@steroidsjs/nest-notifier/infrastructure/config';
-import {ModuleHelper} from '@steroidsjs/nest/infrastructure/helpers/ModuleHelper';
-import {INotifierService} from '@steroidsjs/nest-modules/notifier/services/INotifierService';
-import {NotifierService} from '@steroidsjs/nest-notifier/domain/services/NotifierService';
-import {SmscSmsProvider} from '@steroidsjs/nest-notifier/domain/providers/SmscSmsProvider';
-import coreModule from '@steroidsjs/nest-notifier';
-import notifierConfig from '@steroidsjs/nest-notifier/infrastructure/config';
-import {NOTIFIER_PROVIDERS_LIST} from '@steroidsjs/nest-notifier/domain/interfaces/INotifierProvidersList'
+
+const NOTIFIER_MIGRATIONS_MODULE_NAME = 'notifier';
 
 @Module({
-    ...coreModule,
-    config: notifierConfig,
-    module: (config: INotifierModuleConfig) => {
-        const module = coreModule.module(config);
-        return {
-            ...module,
-            providers: [
-                ...(module.providers ?? []),
-                {
-                    provide: NOTIFIER_PROVIDERS_LIST,
-                    inject: [
-                        SmscSmsProvider,
-                    ],
-                    useFactory: (...providers: INotifierProvider[]) => providers,
-                },
-                SmscSmsProvider,
-            ],
-        };
-    },
+    module: () => ({
+        imports: [
+            CoreNotifierModule.registerAsync({
+                migrationsModuleName: NOTIFIER_MIGRATIONS_MODULE_NAME,
+                providerModules: [
+                    firebasePushProviderModule,
+                ],
+            }),
+        ],
+        providers: [],
+        exports: [
+            CoreNotifierModule,
+        ],
+    }),
 })
 export class NotifierModule {}
 ```
+
+`migrationsModuleName` должен совпадать с именем модуля проекта, в который генератор миграций должен складывать миграции.
+Например, если локальный модуль лежит в `src/notifier`, передайте `notifier`.
 
 3. Импортируем созданный модуль в главный модуль проекта:
 ```typescript
@@ -118,15 +112,112 @@ yarn cli migrate
 
 Реализованные провайдеры:
 
-- [FirebasePushProvider](https://github.com/steroids/nest-notifier/blob/main/src/domain/providers/FirebasePushProvider.ts) - отправка push-уведомлений через [Firebase Cloud Messaging](https://firebase.google.com/products/cloud-messaging?hl=en)
-- [MailProvider](https://github.com/steroids/nest-notifier/blob/main/src/domain/providers/MailProvider.ts) - отправка писем по электронной почте с помощью [NestJS Mailer](https://nest-modules.github.io/mailer/)
-- [SmscCallProvider](https://github.com/steroids/nest-notifier/blob/main/src/domain/providers/SmscCallProvider.ts) - отправка звонков через [SMSC](https://smsc.ru/api/http/send/voice/#menu)
-- [SmscSmsProvider](https://github.com/steroids/nest-notifier/blob/main/src/domain/providers/SmscSmsProvider.ts) - отправка SMS через [SMSC](https://smsc.ru/api/http/send/sms/#menu)
-- [SmscVoiceMessageProvider](https://github.com/steroids/nest-notifier/blob/main/src/domain/providers/SmscVoiceMessageProvider.ts) - отправка голосовых сообщений через [SMSC](https://smsc.ru/api/http/send/voice/#menu)
-- [SmsRuCallProvider](https://github.com/steroids/nest-notifier/blob/main/src/domain/providers/SmsRuCallProvider.ts) - отправка звонков через [SMS.ru](https://sms.ru/api/code_call)
-- [SmsRuSmsProvider](https://github.com/steroids/nest-notifier/blob/main/src/domain/providers/SmsRuSmsProvider.ts) - отправка SMS через [SMS.ru](https://sms.ru/api/send)
+- [FirebasePushProvider](https://github.com/steroids/nest-notifier/blob/main/src/providers/firebase/infrastructure/providers/FirebasePushProvider.ts) - отправка push-уведомлений через [Firebase Cloud Messaging](https://firebase.google.com/products/cloud-messaging?hl=en)
+- [MailProvider](https://github.com/steroids/nest-notifier/blob/main/src/providers/mail/infrastructure/providers/MailProvider.ts) - отправка писем по электронной почте с помощью [NestJS Mailer](https://nest-modules.github.io/mailer/)
+- [SmscCallProvider](https://github.com/steroids/nest-notifier/blob/main/src/providers/smsc/infrastructure/providers/SmscCallProvider.ts) - отправка звонков через [SMSC](https://smsc.ru/api/http/send/voice/#menu)
+- [SmscSmsProvider](https://github.com/steroids/nest-notifier/blob/main/src/providers/smsc/infrastructure/providers/SmscSmsProvider.ts) - отправка SMS через [SMSC](https://smsc.ru/api/http/send/sms/#menu)
+- [SmscVoiceMessageProvider](https://github.com/steroids/nest-notifier/blob/main/src/providers/smsc/infrastructure/providers/SmscVoiceMessageProvider.ts) - отправка голосовых сообщений через [SMSC](https://smsc.ru/api/http/send/voice/#menu)
+- [SmsRuCallProvider](https://github.com/steroids/nest-notifier/blob/main/src/providers/smsRu/infrastructure/providers/SmsRuCallProvider.ts) - отправка звонков через [SMS.ru](https://sms.ru/api/code_call)
+- [SmsRuSmsProvider](https://github.com/steroids/nest-notifier/blob/main/src/providers/smsRu/infrastructure/providers/SmsRuSmsProvider.ts) - отправка SMS через [SMS.ru](https://sms.ru/api/send)
+
+### Модули провайдеров
+
+Провайдеры можно подключать через `NotifierModule.registerAsync({providerModules})`.
+Каждый провайдер подключается как отдельный Nest/Steroids module, который сам объявляет свои `providers`, `exports` и, если нужно, `tables`.
+Основной notifier импортирует эти модули, а таблицы provider-модулей попадут в TypeORM entities только если соответствующий модуль подключён.
+Код провайдеров лежит отдельно от core-модуля: `src/providers/<provider>/domain` и `src/providers/<provider>/infrastructure`.
+Контракты, модели и сервисы хранения контактной информации находятся в `domain`, а конкретные адаптеры внешних сервисов - в `infrastructure/providers`.
+
+Для Firebase push дополнительно подключается `NotifierPushTokenService` и таблица `notifier_push_token`:
+
+```typescript
+import {Module} from '@nestjs/common';
+import {NotifierModule as CoreNotifierModule} from '@steroidsjs/nest-notifier/infrastructure/NotifierModule';
+import {firebasePushProviderModule} from '@steroidsjs/nest-notifier/providers/firebase';
+
+const NOTIFIER_MIGRATIONS_MODULE_NAME = 'notifier';
+
+@Module({
+    imports: [
+        CoreNotifierModule.registerAsync({
+            migrationsModuleName: NOTIFIER_MIGRATIONS_MODULE_NAME,
+            providerModules: [
+                firebasePushProviderModule,
+            ],
+        }),
+    ],
+    exports: [
+        CoreNotifierModule,
+    ],
+})
+export class NotifierModule {}
+```
+
+### Собственные провайдеры в проекте
+
+Проект может добавить собственный провайдер уведомлений наравне с провайдерами из пакета.
+Для этого нужно:
+- реализовать сервис, который соответствует `INotifierProvider`;
+- объявить обычный Nest module, который регистрирует и экспортирует этот сервис;
+- создать descriptor `INotifierProviderModule` и передать его в `providerModules`.
+
+```typescript
+import {Module} from '@nestjs/common';
+import {INotifierProviderModule} from '@steroidsjs/nest-notifier/domain/interfaces/INotifierProviderModule';
+import {LocalSmsProvider} from './providers/LocalSmsProvider';
+
+@Module({
+    providers: [
+        LocalSmsProvider,
+    ],
+    exports: [
+        LocalSmsProvider,
+    ],
+})
+export class LocalSmsProviderModule {}
+
+export const localSmsProviderModule: INotifierProviderModule = {
+    module: LocalSmsProviderModule,
+    notifierProviders: [
+        LocalSmsProvider,
+    ],
+};
+```
+
+Если провайдеру нужны свои таблицы, добавьте их в descriptor:
+
+```typescript
+export const localSmsProviderModule: INotifierProviderModule = {
+    module: LocalSmsProviderModule,
+    tables: [
+        LocalSmsMessageTable,
+    ],
+    notifierProviders: [
+        LocalSmsProvider,
+    ],
+};
+```
+
+После этого подключите descriptor в локальном `NotifierModule`:
+
+```typescript
+CoreNotifierModule.registerAsync({
+    migrationsModuleName: NOTIFIER_MIGRATIONS_MODULE_NAME,
+    providerModules: [
+        firebasePushProviderModule,
+        localSmsProviderModule,
+    ],
+})
+```
 
 ## Модели
+
+#### NotifierPushTokenModel
+Device token для push-уведомлений. Подключается вместе с `firebasePushProviderModule`, чтобы таблица создавалась только в проектах, где используется Firebase push.
+
+Для чего можно использовать:
+- Хранение токенов устройств пользователя.
+- Получение токенов через `NotifierPushTokenService.findTokensByUserId()` перед отправкой push-уведомления.
 
 #### NotifierSendLogModel
 Основной лог отправки уведомления. Содержит тип, имя провайдера, статус отправки, сообщение об ошибке,
