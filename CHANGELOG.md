@@ -1,8 +1,8 @@
 # Steroids Nest Notifier Changelog
 
-## Unreleased
+## [0.5.0](https://github.com/steroids/nest-notifier/compare/0.4.0...0.5.0) (2026-07-23)
 
-[Migration guide](docs/MigrationGuide.md#unreleased)
+[Migration guide](docs/MigrationGuide.md#050-2026-07-23)
 
 ### Breaking changes
 

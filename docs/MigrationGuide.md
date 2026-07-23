@@ -1,6 +1,6 @@
 # Steroids Nest Notifier Migration Guide
 
-## [Unreleased](../CHANGELOG.md#unreleased)
+## [0.5.0](../CHANGELOG.md#050-2026-07-23) (2026-07-23)
 
 ### Замена форков TypeORM на оригинальные пакеты
 
