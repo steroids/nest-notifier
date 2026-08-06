@@ -17,20 +17,27 @@
     "lodash": "^4.17.21"
   },
   "peerDependencies": {
-    "@nestjs-modules/mailer": "^1.8.1",
-    "@nestjs/common": "^10.4.19",
+    "@nestjs-modules/mailer": "^1.11.2 || ^2.0.0",
+    "@nestjs/common": "^10.4.19 || ^11.0.1",
+    "@nestjs/core": "^10.4.19 || ^11.0.1",
     "@nestjs/typeorm": "^11.0.3",
     "@steroidsjs/nest": "^5.0.0",
     "@steroidsjs/nest-modules": "^0.1.6",
     "axios": "^1.2.6",
     "typeorm": "^1.1.0"
   },
+  "peerDependenciesMeta": {
+    "@nestjs-modules/mailer": {
+      "optional": true
+    }
+  },
   "devDependencies": {
     "@jest/globals": "^29.4.1",
-    "@nestjs-modules/mailer": "^1.8.1",
-    "@nestjs/common": "^10.4.19",
-    "@nestjs/schematics": "^10.2.3",
-    "@nestjs/testing": "^10.4.19",
+    "@nestjs-modules/mailer": "^2.3.7",
+    "@nestjs/common": "^11.1.28",
+    "@nestjs/core": "^11.1.28",
+    "@nestjs/schematics": "^11.0.0",
+    "@nestjs/testing": "^11.1.28",
     "@nestjs/typeorm": "^11.0.3",
     "@steroidsjs/eslint-config": "^3.0.1",
     "@steroidsjs/nest": "^5.0.0",
@@ -43,6 +50,7 @@
     "eslint": "^8.33.0",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-prettier": "^4.2.1",
+    "nodemailer": "^8.0.5",
     "prettier": "^2.8.3",
     "source-map-support": "^0.5.21",
     "ts-loader": "^9.4.2",
