@@ -1,6 +1,6 @@
 # Steroids Nest Notifier Migration Guide
 
-## [Unreleased](../CHANGELOG.md#unreleased)
+## [0.6.0](../CHANGELOG.md#060-2026-08-11) (2026-08-11)
 
 ### Поддержка NestJS 11
 
