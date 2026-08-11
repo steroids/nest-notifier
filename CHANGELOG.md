@@ -1,5 +1,16 @@
 # Steroids Nest Notifier Changelog
 
+## [Unreleased]
+
+[Migration guide](docs/MigrationGuide.md#unreleased)
+
+### Changes
+
+- Добавлена одновременная поддержка NestJS 10 и NestJS 11 в `peerDependencies` для `@nestjs/common` и `@nestjs/core`.
+- Диапазон поддерживаемых версий `@nestjs-modules/mailer` обновлён до `^1.11.2 || ^2.0.0`; зависимость от Mailer отмечена как опциональная.
+- Среда разработки обновлена до NestJS 11, Mailer 2 и Nodemailer 8.
+- Тип `BatchResponse` теперь импортируется из публичного API `firebase-admin/messaging` вместо внутреннего модуля Firebase Admin.
+
 ## [0.5.0](https://github.com/steroids/nest-notifier/compare/0.4.0...0.5.0) (2026-07-23)
 
 [Migration guide](docs/MigrationGuide.md#050-2026-07-23)

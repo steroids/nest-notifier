@@ -3,7 +3,7 @@ import {
     INotifierMailOptions,
 } from '@steroidsjs/nest-modules/notifier/interfaces/INotifierSendOptions';
 import {DataMapper} from '@steroidsjs/nest/usecases/helpers/DataMapper';
-import {BatchResponse} from 'firebase-admin/lib/messaging';
+import type {BatchResponse} from 'firebase-admin/messaging';
 import {Injectable} from '@nestjs/common';
 import {INotifierProvider} from '../interfaces/INotifierProvider';
 import {IMailService} from '../interfaces/IMailService';
