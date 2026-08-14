@@ -113,9 +113,7 @@ yarn add --dev @nestjs/schematics@^10.2.3 @nestjs/testing@^10.4.19
 ```ts
 @Module({
     ...coreModule,
-    tables: [
-        ...ModuleHelper.importDir(__dirname + '/tables'),
-    ],
+    tables,
     module: (config) => {
         const module = coreModule.module(config) as any;
         return {
@@ -134,9 +132,7 @@ export class NotifierModule {}
 ```ts
 @Module({
     ...coreModule,
-    tables: [
-        ...ModuleHelper.importDir(__dirname + '/tables'),
-    ],
+    tables,
     module: (config) => {
         const module = coreModule.module(config) as any;
         return {
